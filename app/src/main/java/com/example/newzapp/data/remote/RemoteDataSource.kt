@@ -1,0 +1,7 @@
+package com.example.newzapp.data.remote
+
+import javax.inject.Inject
+
+class RemoteDataSource @Inject constructor(private val newsApiService: NewsApiService) {
+  suspend fun getAllNewsByQuery(query: String) = newsApiService.getNewsArticles(query)
+}
