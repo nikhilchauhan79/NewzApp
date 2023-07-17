@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.newzapp.data.local.entities.NewsResponseEntity
+import com.example.newzapp.utils.DateFormatterUtils
 
 @Composable
 fun NewsList(
@@ -83,7 +84,7 @@ fun NewsItem(
         horizontalArrangement = Arrangement.SpaceBetween
       ) {
         Text(
-          text = newsItem.publishedAt.toString(), style = MaterialTheme.typography.bodyLarge,
+          text = DateFormatterUtils.formatDataTime(newsItem.publishedAt.toString()), style = MaterialTheme.typography.bodyLarge,
           fontWeight = FontWeight.Bold
         )
       }
