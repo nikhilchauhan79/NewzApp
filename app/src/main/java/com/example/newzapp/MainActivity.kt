@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.newzapp.data.model.NewsResponseDTO
+import com.example.newzapp.data.local.entities.NewsResponseEntity
 import com.example.newzapp.data.remote.NetworkResult
 import com.example.newzapp.ui.screens.news.components.NewsList
 import com.example.newzapp.ui.theme.NewzAppTheme
@@ -61,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
   @Composable
   private fun HandleAllNewsByQueryResponse(
-    allNews: NetworkResult<NewsResponseDTO>?,
+    allNews: NetworkResult<NewsResponseEntity>?,
   ) {
     when (allNews) {
       is NetworkResult.Error -> {
