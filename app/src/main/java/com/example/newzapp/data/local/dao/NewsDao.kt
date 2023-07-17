@@ -22,10 +22,10 @@ interface NewsDao {
   @Query("SELECT * FROM news")
   fun getAllNews(): Flow<NewsResponseEntity>
 
-  @Query("SELECT * FROM news")
+  @Query("SELECT * FROM sources")
   fun getNewsSources(): Flow<NewsSourcesEntity>
 
-  @Query("SELECT * FROM news")
+  @Query("SELECT * FROM top_headlines")
   fun getTopHeadlines(): Flow<TopHeadlinesEntity>
 
 }

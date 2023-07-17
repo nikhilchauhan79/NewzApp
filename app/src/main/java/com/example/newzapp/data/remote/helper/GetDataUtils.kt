@@ -29,7 +29,7 @@ inline fun <reified T, reified A> performGetOperation(
     }
   } else if (networkResult is NetworkResult.Error) {
     emit(NetworkResult.Error(message = networkResult.message.toString()))
-    delay(500)
+    delay(1000)
     emit(NetworkResult.Success(localData))
   }
 }.flowOn(Dispatchers.IO)
