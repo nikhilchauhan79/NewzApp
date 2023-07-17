@@ -15,6 +15,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.newzapp.data.local.entities.NewsSourcesEntity
@@ -35,14 +38,20 @@ fun SourceItem(source: NewsSourcesEntity.Source) {
         .wrapContentHeight()
         .padding(vertical = 8.dp, horizontal = 8.dp)
     ) {
-      Text(text = source.name.toString(), style = MaterialTheme.typography.headlineMedium)
+      Text(
+        text = source.name.toString(), style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold
+      )
       Spacer(modifier = Modifier.height(8.dp))
       Text(
         text = source.description.toString(), style = MaterialTheme.typography.bodyLarge,
         maxLines = 8, overflow = TextOverflow.Ellipsis
       )
       Spacer(modifier = Modifier.height(8.dp))
-      Text(text = source.url.toString(), style = MaterialTheme.typography.bodyLarge)
+      Text(
+        text = source.url.toString(), style = MaterialTheme.typography.bodyLarge,
+        color = Color.Blue, textDecoration = TextDecoration.Underline
+      )
 
       Row(
         horizontalArrangement = Arrangement.SpaceBetween,

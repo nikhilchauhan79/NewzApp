@@ -41,3 +41,16 @@ data class TopHeadlinesEntity(
     )
   }
 }
+
+fun TopHeadlinesEntity.toAllNews() = NewsResponseEntity(0, articles?.map {
+  it?.toAllNews()
+}, status, totalResults)
+
+fun TopHeadlinesEntity.Article.toAllNews() = NewsResponseEntity.Article(
+  author, content, description, publishedAt,
+  source?.toAllNews(), title, url, urlToImage
+)
+
+fun TopHeadlinesEntity.Article.Source.toAllNews() = NewsResponseEntity.Article.Source(
+  id, name
+)

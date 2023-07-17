@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -62,8 +63,7 @@ fun NewsItem(newsItem: NewsResponseEntity.Article) {
         Text(
           text = newsItem.description.toString(),
           maxLines = 5,
-          modifier = Modifier.weight(0.7f),
-          style = MaterialTheme.typography.headlineSmall
+          style = MaterialTheme.typography.headlineSmall,
         )
       }
       Spacer(modifier = Modifier.height(8.dp))
@@ -71,7 +71,10 @@ fun NewsItem(newsItem: NewsResponseEntity.Article) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
       ) {
-        Text(text = newsItem.publishedAt.toString(), style = MaterialTheme.typography.bodyLarge)
+        Text(
+          text = newsItem.publishedAt.toString(), style = MaterialTheme.typography.bodyLarge,
+          fontWeight = FontWeight.Bold
+        )
       }
     }
   }

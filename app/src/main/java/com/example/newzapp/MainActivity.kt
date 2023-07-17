@@ -25,6 +25,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.newzapp.data.local.entities.NewsResponseEntity
 import com.example.newzapp.data.local.entities.NewsSourcesEntity
 import com.example.newzapp.data.remote.NetworkResult
+import com.example.newzapp.ui.screens.bottomnav.NewzBottomNavBar
+import com.example.newzapp.ui.screens.home.HomeScreen
 import com.example.newzapp.ui.screens.news.components.NewsList
 import com.example.newzapp.ui.screens.sources.SourcesScreen
 import com.example.newzapp.ui.theme.NewzAppTheme
@@ -38,90 +40,11 @@ class MainActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
     setContent {
       NewzAppTheme {
-        val newsViewModel: NewsViewModel = hiltViewModel()
-        val allNews = newsViewModel.allNewsByQueryResponse.collectAsStateWithLifecycle().value
-        val newsSources = newsViewModel.allNewsSourcesResponse.collectAsStateWithLifecycle().value
+//        val newsViewModel: NewsViewModel = hiltViewModel()
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-          Scaffold(topBar = {
-            TopAppBar(title = {
-              Text("Newz App")
-            })
-          }) {
-            Column(
-              modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
-              verticalArrangement = Arrangement.Center,
-              horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-//              HandleAllNewsByQueryResponse(allNews)
-              HandleNewsSourcesResponse(newsSources)
-            }
-          }
+          HomeScreen()
         }
-      }
-    }
-  }
-
-  @Composable
-  private fun HandleNewsSourcesResponse(newsSources: NetworkResult<NewsSourcesEntity>?) {
-    when (newsSources) {
-      is NetworkResult.Error -> {
-        Text(text = newsSources.message ?: "", style = MaterialTheme.typography.headlineMedium)
-      }
-
-      is NetworkResult.Loading -> {
-        CircularProgressIndicator(
-          modifier = Modifier.size(80.dp),
-          color = Color.Blue,
-          strokeWidth = 6.dp
-        )
-      }
-
-      is NetworkResult.Success -> {
-        SourcesScreen(sourcesItems = newsSources.data?.sources?.filterNotNull() ?: emptyList())
-      }
-
-      null -> {
-        CircularProgressIndicator(
-          modifier = Modifier.size(80.dp),
-          color = Color.Blue,
-          strokeWidth = 6.dp
-        )
-      }
-    }
-  }
-
-  @Composable
-  private fun HandleAllNewsByQueryResponse(
-    allNews: NetworkResult<NewsResponseEntity>?,
-  ) {
-    when (allNews) {
-      is NetworkResult.Error -> {
-        Text(text = allNews.message ?: "", style = MaterialTheme.typography.headlineMedium)
-      }
-
-      is NetworkResult.Loading -> {
-        CircularProgressIndicator(
-          modifier = Modifier.size(80.dp),
-          color = Color.Blue,
-          strokeWidth = 6.dp
-        )
-      }
-
-      is NetworkResult.Success -> {
-        NewsList(
-          newsItems = allNews.data?.articles?.filterNotNull() ?: emptyList(),
-        )
-      }
-
-      null -> {
-        CircularProgressIndicator(
-          modifier = Modifier.size(80.dp),
-          color = Color.Blue,
-          strokeWidth = 6.dp
-        )
       }
     }
   }
