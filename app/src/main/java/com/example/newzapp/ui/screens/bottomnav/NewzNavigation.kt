@@ -11,11 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
+import com.example.newzapp.constants.Screens
+import com.example.newzapp.data.local.entities.NewsResponseEntity
 import com.example.newzapp.ui.screens.home.HandleAllNewsByQueryResponse
 import com.example.newzapp.ui.screens.home.HandleNewsSourcesResponse
 import com.example.newzapp.ui.screens.home.HandleTopHeadlinesResponse
+import com.example.newzapp.ui.screens.news.NewsDetailScreen
 import com.example.newzapp.ui.viewmodels.NewsViewModel
 
 @Composable
@@ -25,13 +30,19 @@ fun NewzNavigation(
   val allNews = newsViewModel.allNewsByQueryResponse.collectAsStateWithLifecycle().value
   val topHeadlines = newsViewModel.topHeadlinesResponse.collectAsStateWithLifecycle().value
   val newsSources = newsViewModel.allNewsSourcesResponse.collectAsStateWithLifecycle().value
+  val selectedArticle = newsViewModel.selectedArticle.collectAsStateWithLifecycle().value
+  val onNewsArticleSelected: (NewsResponseEntity.Article) -> Unit = {
+    newsViewModel.selectedArticle.value = it
+    navHostController.navigate(Screens.NEWS_DETAIL)
+  }
+
   NavHost(navController = navHostController, startDestination = NavigationItem.Home.route) {
     composable(NavigationItem.Home.route) {
-      HandleAllNewsByQueryResponse(allNews)
+      HandleAllNewsByQueryResponse(allNews, onNewsArticleSelected)
     }
 
     composable(NavigationItem.Headlines.route) {
-      HandleTopHeadlinesResponse(allNews = topHeadlines)
+      HandleTopHeadlinesResponse(allNews = topHeadlines, onNewsArticleSelected)
     }
 
     composable(NavigationItem.Sources.route) {
@@ -41,6 +52,13 @@ fun NewzNavigation(
     composable(NavigationItem.Bookmarks.route) {
       NotImplemented()
     }
+
+    composable(Screens.NEWS_DETAIL) {
+      if (selectedArticle != null) {
+        NewsDetailScreen(article = selectedArticle)
+      }
+    }
+
   }
 }
 

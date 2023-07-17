@@ -25,6 +25,7 @@ class NewsViewModel @Inject constructor(
     MutableStateFlow(null)
  private val _topHeadlinesResponse: MutableStateFlow<NetworkResult<TopHeadlinesEntity>?> =
     MutableStateFlow(null)
+  val selectedArticle: MutableStateFlow<NewsResponseEntity.Article?> = MutableStateFlow(null)
 
   val allNewsByQueryResponse: StateFlow<NetworkResult<NewsResponseEntity>?> =
     _allNewsByQueryResponse.asStateFlow()

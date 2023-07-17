@@ -1,5 +1,6 @@
 package com.example.newzapp.ui.screens.news.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,21 +26,31 @@ import coil.compose.AsyncImage
 import com.example.newzapp.data.local.entities.NewsResponseEntity
 
 @Composable
-fun NewsList(newsItems: List<NewsResponseEntity.Article>) {
+fun NewsList(
+  newsItems: List<NewsResponseEntity.Article>,
+  onNewsArticleSelected: (NewsResponseEntity.Article) -> Unit
+) {
   LazyColumn(
   ) {
     items(newsItems) { newsItem ->
-      NewsItem(newsItem)
+      NewsItem(newsItem, onNewsArticleSelected)
     }
   }
 }
 
 @Composable
-fun NewsItem(newsItem: NewsResponseEntity.Article) {
+fun NewsItem(
+  newsItem: NewsResponseEntity.Article,
+  onNewsArticleSelected: (NewsResponseEntity.Article) -> Unit
+) {
   Card(
     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     shape = RoundedCornerShape(8.dp),
-    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+    modifier = Modifier
+      .padding(horizontal = 16.dp, vertical = 10.dp)
+      .clickable {
+        onNewsArticleSelected(newsItem)
+      }
   ) {
     Column(
       modifier = Modifier
@@ -52,7 +63,7 @@ fun NewsItem(newsItem: NewsResponseEntity.Article) {
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
         modifier = Modifier
-          .height(180.dp)
+          .height(240.dp)
           .fillMaxWidth()
       )
       Spacer(modifier = Modifier.height(8.dp))
