@@ -23,8 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.newzapp.data.local.entities.NewsResponseEntity
+import com.example.newzapp.data.local.entities.NewsSourcesEntity
 import com.example.newzapp.data.remote.NetworkResult
 import com.example.newzapp.ui.screens.news.components.NewsList
+import com.example.newzapp.ui.screens.sources.SourcesScreen
 import com.example.newzapp.ui.theme.NewzAppTheme
 import com.example.newzapp.ui.viewmodels.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +40,7 @@ class MainActivity : ComponentActivity() {
       NewzAppTheme {
         val newsViewModel: NewsViewModel = hiltViewModel()
         val allNews = newsViewModel.allNewsByQueryResponse.collectAsStateWithLifecycle().value
+        val newsSources = newsViewModel.allNewsSourcesResponse.collectAsStateWithLifecycle().value
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
           Scaffold(topBar = {
@@ -46,14 +49,46 @@ class MainActivity : ComponentActivity() {
             })
           }) {
             Column(
-              modifier = Modifier.padding(it).fillMaxSize(),
+              modifier = Modifier
+                .padding(it)
+                .fillMaxSize(),
               verticalArrangement = Arrangement.Center,
               horizontalAlignment = Alignment.CenterHorizontally
             ) {
-              HandleAllNewsByQueryResponse(allNews)
+//              HandleAllNewsByQueryResponse(allNews)
+              HandleNewsSourcesResponse(newsSources)
             }
           }
         }
+      }
+    }
+  }
+
+  @Composable
+  private fun HandleNewsSourcesResponse(newsSources: NetworkResult<NewsSourcesEntity>?) {
+    when (newsSources) {
+      is NetworkResult.Error -> {
+        Text(text = newsSources.message ?: "", style = MaterialTheme.typography.headlineMedium)
+      }
+
+      is NetworkResult.Loading -> {
+        CircularProgressIndicator(
+          modifier = Modifier.size(80.dp),
+          color = Color.Blue,
+          strokeWidth = 6.dp
+        )
+      }
+
+      is NetworkResult.Success -> {
+        SourcesScreen(sourcesItems = newsSources.data?.sources?.filterNotNull() ?: emptyList())
+      }
+
+      null -> {
+        CircularProgressIndicator(
+          modifier = Modifier.size(80.dp),
+          color = Color.Blue,
+          strokeWidth = 6.dp
+        )
       }
     }
   }
@@ -82,7 +117,11 @@ class MainActivity : ComponentActivity() {
       }
 
       null -> {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+          modifier = Modifier.size(80.dp),
+          color = Color.Blue,
+          strokeWidth = 6.dp
+        )
       }
     }
   }
